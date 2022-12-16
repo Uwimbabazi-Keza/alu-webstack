@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#SCript that shows information about subdomains
+if [ $# -eq 1 ]; then
+    for subdomain in "www" "lb-01" "web-01" "web-02"}; do
+        record_type="$(dig "$subdomain.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')"
+        destination_ip="$(dig "$subdomain.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')"
+        echo "The subdomain $subdomain is a $record_type record and points to $destination_ip"
+    done
+else
+    subdomain="$2"
+    record_type="$(dig "$subdomain.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')"
+    destination_ip="$(dig "$subdomain.$1" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')"
+    echo "The subdomain $subdomain is a $record_type record and points to $destination_ip"
+fi
